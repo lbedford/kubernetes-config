@@ -11,10 +11,10 @@ metadata:
 spec:
   tls:
     - hosts:
-      - "dashboard.k.oneill.net"
+      - "dashboard.k.draiocht.net"
       secretName: "dashboard-tls"
   rules:
-    - host: "dashboard.k.oneill.net"
+    - host: "dashboard.k.draiocht.net"
       http:
         paths:
           - path: /

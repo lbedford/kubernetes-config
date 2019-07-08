@@ -4,7 +4,7 @@ BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $BASEDIR
 
 # Get sorted list of all directories with yaml in them
-DIRS=$(find . -name '*.yaml'|cut -d / -f2-2|sort|uniq)
+DIRS=$(find . -maxdepth 2 -name '*.yaml'|cut -d / -f2-2|sort|uniq)
 
 for dir in $DIRS; do 
     if [ -r "$dir/kustomization.yaml" ]; then

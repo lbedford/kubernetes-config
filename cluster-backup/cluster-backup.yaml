@@ -44,8 +44,8 @@ spec:
               path: /etc/kubernetes
             name: k8s
           - nfs:
-              server: fs2.oneill.net
-              path: /volume1/k8s-pv/backups
+              server: photo.dmz.lbedford.org
+              path: /volume2/kubernetes/backups
             name: backups
           restartPolicy: OnFailure
           nodeSelector:

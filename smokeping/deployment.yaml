@@ -27,7 +27,7 @@ spec:
             name: data
         env:
           - name: TZ
-            value: "America/New_York"
+            value: "Europe/Zurich"
       volumes:
         - name: config
           persistentVolumeClaim:
