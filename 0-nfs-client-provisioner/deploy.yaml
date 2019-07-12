@@ -16,7 +16,7 @@ spec:
       serviceAccount: nfs-client-provisioner
       containers:
         - name: nfs-client-provisioner
-          image: dvorak/nfs-client-provisioner:0.0.1
+          image: quay.io/external_storage/nfs-client-provisioner:latest
           volumeMounts:
             - name: nfs-client-root
               mountPath: /persistentvolumes
@@ -24,11 +24,11 @@ spec:
             - name: PROVISIONER_NAME
               value: nfs
             - name: NFS_SERVER
-              value: fs2.oneill.net
+              value: photo.dmz.lbedford.org
             - name: NFS_PATH
-              value: /volume1/k8s-pv
+              value: /volume2/kubernetes
       volumes:
         - name: nfs-client-root
           nfs:
-            server: fs2.oneill.net
-            path: /volume1/k8s-pv
+            server: photo.dmz.lbedford.org
+            path: /volume2/kubernetes
