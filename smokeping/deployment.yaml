@@ -14,6 +14,8 @@ spec:
       labels:
         k8s-app: smokeping
     spec:
+      nodeSelector:
+        beta.kubernetes.io/arch: amd64
       containers:
       - name: smokeping
         image: dvorak/docker-smokeping
@@ -27,7 +29,7 @@ spec:
             name: data
         env:
           - name: TZ
-            value: "Europe/Zurich"
+            value: "Europe/Amsterdam"
       volumes:
         - name: config
           persistentVolumeClaim:

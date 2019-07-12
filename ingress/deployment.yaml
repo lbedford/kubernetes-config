@@ -12,12 +12,11 @@ spec:
     metadata:
       labels:
         k8s-app: nginx-ingress-lb
-      annotations:
-        prometheus.io/port: "10254"
-        prometheus.io/scrape: "true"
     spec:
       serviceAccountName: nginx-ingress-serviceaccount
       hostNetwork: true
+      nodeSelector:
+        beta.kubernetes.io/arch: amd64
       containers:
         - name: nginx-ingress-controller
           image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.24.1
@@ -37,7 +36,6 @@ spec:
           args:
              - /nginx-ingress-controller
              - --default-backend-service=kube-system/default-http-backend
-             - --default-ssl-certificate=$(POD_NAMESPACE)/tls-certificate
              - --publish-service=kube-system/nginx-ingress
           env:
              - name: POD_NAME
