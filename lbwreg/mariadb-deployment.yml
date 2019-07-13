@@ -47,7 +47,7 @@ spec:
         - --collation-server=utf8mb4_unicode_ci
         volumeMounts:
           - name: mariadb-volume-mount
-            mountPath: /var/lib/mysql/
+            mountPath: /var/lib/mysql
       volumes:
       - name: mariadb-volume-mount
         persistentVolumeClaim:
