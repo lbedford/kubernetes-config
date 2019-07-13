@@ -8,10 +8,6 @@ metadata:
   labels:
     k8s-app: smokeping
 spec:
-  tls:
-    - secretName: "smokeping-tls"
-    - hosts:
-      - "smokeping.k.draiocht.net"
   rules:
     - host: "smokeping.k.draiocht.net"
       http:
