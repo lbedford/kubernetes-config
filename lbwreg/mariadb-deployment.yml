@@ -19,33 +19,36 @@ spec:
         tier: mariadb
     spec:
       containers:
-      - image: bitnami/mariadb:latest
+      - image: mariadb
         name: mariadb-container
         env:
-        - name: MARIADB_ROOT_PASSWORD
+        - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: mariadb-root-pass
               key: password
-        - name: MARIADB_PASSWORD
+        - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
               name: mariadb-credentials
               key: password
-        - name: MARIADB_USER
+        - name: MYSQL_USER
           valueFrom:
             secretKeyRef:
               name: mariadb-credentials
               key: user
-        - name: MARIADB_DATABASE
+        - name: MYSQL_DATABASE
           value: lbw
         ports:
           - containerPort: 3306
-            name: mariadb
+            name: mysql
+        args:
+        - --character-set-server=utf8mb4 
+        - --collation-server=utf8mb4_unicode_ci
         volumeMounts:
           - name: mariadb-volume-mount
-            mountPath: /bitnami/
+            mountPath: /var/lib/mysql/
       volumes:
       - name: mariadb-volume-mount
         persistentVolumeClaim:
-          claimName: nfs-db
+          claimName: lbwreg-db

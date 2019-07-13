@@ -1,13 +1,60 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: lbwreg-content-pv
+  labels:
+    type: nfs
+    app: lbwreg
+    volume-type: nfs
+    content: static
+spec:
+  storageClassName: nfs
+  capacity:
+    storage: 6Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /volume2/kubernetes/lbw-content
+    server: photo.dmz.lbedford.org
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: lbwreg-db-pv
+  labels:
+    type: nfs
+    app: lbwreg
+    volume-type: nfs
+    content: db
+spec:
+  storageClassName: nfs
+  capacity:
+    storage: 6Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: /volume2/kubernetes/lbw-db
+    server: photo.dmz.lbedford.org
+---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: lbwreg-db
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 6Gi
+  selector:
+    matchLabels:
+      app: lbwreg
+      volume-type: nfs
+      content: db
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -19,3 +66,8 @@ spec:
   resources:
     requests:
       storage: 6Gi
+  selector:
+    matchLabels:
+      app: lbwreg
+      volume-type: nfs
+      content: static
