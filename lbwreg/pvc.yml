@@ -1,0 +1,21 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: lbwreg-db
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 6Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: lbwreg-content
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 6Gi

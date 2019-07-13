@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb-deployment
+  labels:
+    app: lbwreg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lbwreg
+      tier: mariadb
+  strategy: 
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: lbwreg
+        tier: mariadb
+    spec:
+      containers:
+      - image: bitnami/mariadb:latest
+        name: mariadb-container
+        env:
+        - name: MARIADB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-root-pass
+              key: password
+        - name: MARIADB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-credentials
+              key: password
+        - name: MARIADB_USER
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-credentials
+              key: user
+        - name: MARIADB_DATABASE
+          value: lbw
+        ports:
+          - containerPort: 3306
+            name: mariadb
+        volumeMounts:
+          - name: mariadb-volume-mount
+            mountPath: /bitnami/
+      volumes:
+      - name: mariadb-volume-mount
+        persistentVolumeClaim:
+          claimName: nfs-db
