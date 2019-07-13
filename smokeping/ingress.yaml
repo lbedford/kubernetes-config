@@ -4,12 +4,14 @@ kind: Ingress
 metadata:
   name: smokeping
   annotations:
-    kubernetes.io/ingress.class: traefik
+    kubernetes.io/ingress.class: nginx
   labels:
     k8s-app: smokeping
 spec:
   tls:
     - secretName: "smokeping-tls"
+    - hosts:
+      - "smokeping.k.draiocht.net"
   rules:
     - host: "smokeping.k.draiocht.net"
       http:
