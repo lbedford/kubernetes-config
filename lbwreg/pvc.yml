@@ -13,7 +13,7 @@ spec:
     storage: 6Gi
   volumeMode: Filesystem
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
   nfs:
     path: /volume2/kubernetes/lbw-content

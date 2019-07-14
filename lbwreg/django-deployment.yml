@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lbwreg-frontend
+  labels:
+    app: lbwreg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lbwreg
+      tier: django
+  strategy: 
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        k8s-app: lbwreg-frontend
+        app: lbwreg
+        tier: django
+    spec:
+      containers:
+      - image: lbedford/lbwreg-django
+        name: django-container
+        env:
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-credentials
+              key: password
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-credentials
+              key: user
+        - name: MYSQL_DATABASE
+          value: lbw
+        - name: MARIADB_HOST
+          value: lbwreg-db
+        - name: MARIADB_PORT
+          value: "3306"
+        - name: DEBUG
+          valueFrom:
+            secretKeyRef:
+              name: lbwreg-details
+              key: debug
+        - name: ALLOWED_HOST
+          valueFrom:
+            secretKeyRef:
+              name: lbwreg-details
+              key: allowed_host
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: lbwreg-details
+              key: secret_key
+        - name: ADMIN_NAME
+          value: "Liam Bedford"
+        - name: ADMIN_EMAIL
+          value: "lbedford@lbedford.org"
+        - name: DEFAULT_FROM_EMAIL
+          value: lbw@draiocht.net
+        - name: SERVER_EMAIL
+          value: django@lbwreg.draiocht.net
+        - name: LBW_TO_EMAIL
+          value: linuxbierwanderung@googlegroups.com
+        - name: LBW_FROM_EMAIL
+          value: lbw@draiocht.net
+        ports:
+          - containerPort: 80
+            name: web
+        volumeMounts:
+          - mountPath: "/var/www/content"
+            name: content
+      volumes:
+        - name: content
+          persistentVolumeClaim:
+            claimName: lbwreg-content
