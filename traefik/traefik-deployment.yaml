@@ -27,36 +27,31 @@ spec:
         beta.kubernetes.io/arch: amd64
       serviceAccountName: traefik-ingress-controller
       terminationGracePeriodSeconds: 60
-      volumes:
-        - name: config
-          configMap:
-            name: traefik-conf
-        - name: acme
-          hostPath:
-            path: /srv/configs/acme.json
       containers:
       - image: traefik
         name: traefik-ingress-lb
-        volumeMounts:
-          - mountPath: "/config"
-            name: "config"
-          - mountPath: "/acme/acme.json"
-            name: "acme"
         ports:
-        - name: http
+        - name: web
           containerPort: 80
-        - name: https
+        - name: websecure
           containerPort: 443
         - name: admin
           containerPort: 8080
         args:
         - --api
+        - --accesslog
         - --kubernetes
         - --logLevel=INFO
-        - --configfile=/config/traefik.toml
-        - --defaultentrypoints=http,https
-        - "--entrypoints=Name:https Address::443 TLS"
-        - "--entrypoints=Name:http Address::80"
+        - --defaultentrypoints=web,websecure
+        - "--entrypoints=Name:websecure Address::443 TLS"
+        - "--entrypoints=Name:web Address::80"
+        - --acme
+        - --acme.acmelogging
+        - --acme.tlschallenge
+        - --acme.onhostrule
+        - --acme.email=letsencrypt@lbedford.org
+        - --acme.entrypoint=websecure
+        - --acme.storage=acme.json
 ---
 kind: Service
 apiVersion: v1
@@ -73,7 +68,7 @@ spec:
       name: web
     - protocol: TCP
       port: 443
-      name: https
+      name: websecure
     - protocol: TCP
       port: 8080
       name: admin

@@ -7,11 +7,11 @@ spec:
 # Can also use LoadBalancer type
   type: LoadBalancer
   ports:
-  - name: http
+  - name: web
     port: 80
     targetPort: 80
     protocol: TCP
-  - name: https
+  - name: websecure
     port: 443
     targetPort: 443
     protocol: TCP
