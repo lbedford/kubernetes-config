@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+  labels:
+    app: lbwreg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lbwreg
+      tier: mariadb
+  strategy: 
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: lbwreg
+        tier: mariadb
+    spec:
+      containers:
+      - image: mariadb
+        name: mariadb-container
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-root-pass
+              key: password
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-credentials
+              key: password
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-credentials
+              key: user
+        - name: MYSQL_DATABASE
+          value: lbw
+        ports:
+          - containerPort: 3306
+            name: mysql
+        args:
+        - --character-set-server=utf8mb4 
+        - --collation-server=utf8mb4_unicode_ci
+        volumeMounts:
+          - name: mariadb-volume-mount
+            mountPath: /var/lib/mysql
+      volumes:
+      - name: mariadb-volume-mount
+        persistentVolumeClaim:
+          claimName: lbwreg-db
