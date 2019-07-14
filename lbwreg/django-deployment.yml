@@ -66,6 +66,21 @@ spec:
           value: linuxbierwanderung@googlegroups.com
         - name: LBW_FROM_EMAIL
           value: lbw@draiocht.net
+        - name: EMAIL_HOST
+          valueFrom:
+            secretKeyRef:
+              name: lbwreg-details
+              key: email_host
+        - name: EMAIL_HOST_USER
+          valueFrom:
+            secretKeyRef:
+              name: lbwreg-details
+              key: email_host_user
+        - name: EMAIL_HOST_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: lbwreg-details
+              key: email_host_password
         ports:
           - containerPort: 80
             name: web
