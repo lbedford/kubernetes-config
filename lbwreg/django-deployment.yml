@@ -72,6 +72,11 @@ spec:
             secretKeyRef:
               name: lbwreg-details
               key: email_host
+        - name: EMAIL_PORT
+          valueFrom:
+            secretKeyRef:
+              name: lbwreg-details
+              key: email_port
         - name: EMAIL_HOST_USER
           valueFrom:
             secretKeyRef:
