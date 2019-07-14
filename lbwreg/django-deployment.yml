@@ -20,7 +20,8 @@ spec:
         tier: django
     spec:
       containers:
-      - image: lbedford/lbwreg-django
+      - image: lbedford/lbwreg-django:latest
+        imagePullPolicy: Always
         name: django-container
         env:
         - name: MYSQL_PASSWORD
