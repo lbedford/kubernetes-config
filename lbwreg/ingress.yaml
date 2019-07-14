@@ -1,19 +1,43 @@
----
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: lbwreg
+  name: lbwreg-frontend
   annotations:
     kubernetes.io/ingress.class: "traefik"
 spec:
   rules:
-    - host: "reg.linuxbierwanderung.org"
+    - host: "lbwreg.draiocht.net"
       http:
         paths:
           - path: /
             backend:
-              serviceName: lbwreg
+              serviceName: lbwreg-frontend
               servicePort: web
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: lbwreg-frontend
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+spec:
+  rules:
+    - host: "reg.linuxbierwanderung.com"
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: lbwreg-frontend
+              servicePort: web
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: lbwreg-content
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+spec:
+  rules:
     - host: "content.draiocht.net"
       http:
         paths:

@@ -44,7 +44,7 @@ spec:
             secretKeyRef:
               name: lbwreg-details
               key: debug
-        - name: ALLOWED_HOST
+        - name: ALLOWED_HOSTS
           valueFrom:
             secretKeyRef:
               name: lbwreg-details
