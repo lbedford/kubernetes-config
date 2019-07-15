@@ -23,6 +23,10 @@ spec:
       - image: lbedford/lbwreg-django:latest
         imagePullPolicy: Always
         name: django-container
+        resources:
+          requests:
+            cpu: "3000m"
+            memory: "1Gi"
         env:
         - name: MYSQL_PASSWORD
           valueFrom:
@@ -36,6 +40,8 @@ spec:
               key: user
         - name: MYSQL_DATABASE
           value: lbw
+        - name: DB_CONN_MAX_AGE
+          value: "10"
         - name: MARIADB_HOST
           value: lbwreg-db
         - name: MARIADB_PORT
@@ -87,6 +93,8 @@ spec:
             secretKeyRef:
               name: lbwreg-details
               key: email_host_password
+        - name: WORKERS
+          value: "12"
         ports:
           - containerPort: 80
             name: web
