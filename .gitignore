@@ -1,2 +1,6 @@
 hass/configmap.yaml
 hass/deploy.yaml
+
+not_used/
+
+lbwreg/django_secrets.yml
